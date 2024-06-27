@@ -1,45 +1,136 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
-		store: {
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			]
+	  store: {
+		favorites: [],
+		people: [],
+		vehicles: [],
+		planets: [],
+		person: null,
+		planet: null,
+		vehicle: null,
+		description: null, // Agregado para almacenar descripciones
+	  },
+	  actions: {
+		loadPeople: () => {
+		  fetch("https://www.swapi.tech/api/people/")
+			.then(res => res.json())
+			.then(data => {
+			  setStore({ people: data.results });
+			})
+			.catch(error => {
+			  console.error("Error fetching people:", error);
+			});
 		},
-		actions: {
-			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
-			},
-			loadSomeData: () => {
-				/**
-					fetch().then().then(data => setStore({ "foo": data.bar }))
-				*/
-			},
-			changeColor: (index, color) => {
-				//get the store
-				const store = getStore();
-
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
-
-				//reset the global store
-				setStore({ demo: demo });
+		loadVehicles: () => {
+		  fetch("https://www.swapi.tech/api/vehicles/")
+			.then(res => res.json())
+			.then(data => {
+			  setStore({ vehicles: data.results });
+			})
+			.catch(error => {
+			  console.error("Error fetching vehicles:", error);
+			});
+		},
+		loadPlanets: () => {
+		  fetch("https://www.swapi.tech/api/planets/")
+			.then(res => res.json())
+			.then(data => {
+			  setStore({ planets: data.results });
+			})
+			.catch(error => {
+			  console.error("Error fetching planets:", error);
+			});
+		},
+		fetchPerson: async (id) => {
+		  try {
+			const response = await fetch(`https://www.swapi.tech/api/people/${id}`);
+			const data = await response.json();
+			if (data.result && data.result.properties) {
+			  setStore({ person: data.result.properties });
+			} else {
+			  console.error("Unexpected response structure:", data);
 			}
-		}
+		  } catch (error) {
+			console.error("Error fetching person:", error);
+		  }
+		},
+		fetchPersonDescription: async (id) => {
+		  try {
+			const response = await fetch(`https://www.swapi.tech/api/people/${id}`);
+			const data = await response.json();
+			if (data.result) {
+			  setStore({ description: data.result });
+			} else {
+			  console.error("Unexpected response structure:", data);
+			}
+		  } catch (error) {
+			console.error("Error fetching description:", error);
+		  }
+		},
+		fetchPlanet: async (id) => {
+		  try {
+			const response = await fetch(`https://www.swapi.tech/api/planets/${id}`);
+			const data = await response.json();
+			if (data.result && data.result.properties) {
+			  setStore({ planet: data.result.properties });
+			} else {
+			  console.error("Unexpected response structure:", data);
+			}
+		  } catch (error) {
+			console.error("Error fetching planet:", error);
+		  }
+		},
+		fetchPlanetDescription: async (id) => {
+		  try {
+			const response = await fetch(`https://www.swapi.tech/api/planets/${id}`);
+			const data = await response.json();
+			if (data.result) {
+			  setStore({ description: data.result });
+			} else {
+			  console.error("Unexpected response structure:", data);
+			}
+		  } catch (error) {
+			console.error("Error fetching description:", error);
+		  }
+		},
+		fetchVehicle: async (id) => {
+		  try {
+			const response = await fetch(`https://www.swapi.tech/api/vehicles/${id}`);
+			const data = await response.json();
+			if (data.result && data.result.properties) {
+			  setStore({ vehicle: data.result.properties });
+			} else {
+			  console.error("Unexpected response structure:", data);
+			}
+		  } catch (error) {
+			console.error("Error fetching vehicle:", error);
+		  }
+		},
+		fetchVehicleDescription: async (id) => {
+		  try {
+			const response = await fetch(`https://www.swapi.tech/api/vehicles/${id}`);
+			const data = await response.json();
+			if (data.result) {
+			  setStore({ description: data.result });
+			} else {
+			  console.error("Unexpected response structure:", data);
+			}
+		  } catch (error) {
+			console.error("Error fetching description:", error);
+		  }
+		},
+		addFavorite: (item) => {
+		  const store = getStore();
+		  if (!store.favorites.some(fav => fav.uid === item.uid)) {
+			setStore({ favorites: [...store.favorites, item] });
+		  }
+		},
+		removeFavorite: (item) => {
+		  const store = getStore();
+		  setStore({ favorites: store.favorites.filter(fav => fav.uid !== item.uid) });
+		},
+	  },
 	};
-};
-
-export default getState;
+  };
+  
+  export default getState;
