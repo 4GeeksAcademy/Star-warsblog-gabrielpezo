@@ -12,7 +12,7 @@ export const Home = () => {
     actions.loadPeople();
     actions.loadVehicles();
     actions.loadPlanets();
-  }, [actions]);  // Asegúrate de pasar actions como dependencia para evitar problemas de referencia
+  }, [actions]);
 
   return (
     <div className="text-center mt-5">

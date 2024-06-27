@@ -8,7 +8,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 		person: null,
 		planet: null,
 		vehicle: null,
-		description: null, // Agregado para almacenar descripciones
+		description: null,
 	  },
 	  actions: {
 		loadPeople: () => {

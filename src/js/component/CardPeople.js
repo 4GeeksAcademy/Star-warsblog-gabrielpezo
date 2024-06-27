@@ -8,7 +8,7 @@ import { faHeart } from '@fortawesome/free-solid-svg-icons';
 const CardPeople = ({ item, category }) => {
   const { store, actions } = useContext(Context);
   const isFavorite = store.favorites.some(fav => fav.uid === item.uid);
-  console.log(item)
+  
   return (
     <Card style={{ width: '18rem', margin: '1rem' }}>
       <Card.Img variant="top" src={`https://starwars-visualguide.com/assets/img/${category}/${item.uid}.jpg`} />
